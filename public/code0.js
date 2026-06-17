@@ -45,7 +45,7 @@ gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objec
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDClosedDoorObjects1Objects = Hashtable.newFrom({"ClosedDoor": gdjs.MansionEscapeCode.GDClosedDoorObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objects = Hashtable.newFrom({"Wall": gdjs.MansionEscapeCode.GDWallObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDEnemyObjects1Objects = Hashtable.newFrom({"Enemy": gdjs.MansionEscapeCode.GDEnemyObjects1});
-gdjs.MansionEscapeCode.userFunc0x93da08 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0xa0c1c0 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 const message = runtimeScene.getObjects("Message")[0];
@@ -259,7 +259,7 @@ if (visionLight) {
 gdjs.evtTools.camera.centerCamera(runtimeScene, player, false, "", 0);
 gdjs.evtTools.camera.clampCamera(runtimeScene, 0, 0, 3200, 1920, "", 0);
 };
-gdjs.MansionEscapeCode.userFunc0x884f90 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0x942020 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 
@@ -296,7 +296,7 @@ gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDPlayerObjects1Obj
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDLightItemObjects1Objects = Hashtable.newFrom({"LightItem": gdjs.MansionEscapeCode.GDLightItemObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDPlayerObjects1Objects = Hashtable.newFrom({"Player": gdjs.MansionEscapeCode.GDPlayerObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDRepelItemObjects1Objects = Hashtable.newFrom({"RepelItem": gdjs.MansionEscapeCode.GDRepelItemObjects1});
-gdjs.MansionEscapeCode.userFunc0x992c98 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0x9ea0b0 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 if (!player) {
@@ -472,7 +472,7 @@ gdjs.copyArray(runtimeScene.getObjects("Wall"), gdjs.MansionEscapeCode.GDWallObj
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x93da08(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0xa0c1c0(runtimeScene);
 
 }
 
@@ -480,7 +480,7 @@ gdjs.MansionEscapeCode.userFunc0x93da08(runtimeScene);
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x884f90(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0x942020(runtimeScene);
 
 }
 
@@ -707,7 +707,7 @@ gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMess
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x992c98(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0x9ea0b0(runtimeScene);
 
 }
 
@@ -775,7 +775,7 @@ gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMess
 gdjs.copyArray(runtimeScene.getObjects("plain_text"), gdjs.MansionEscapeCode.GDplain_9595textObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(2).setNumber(1);
 }
-{gdjs.evtTools.network.sendAsyncRequest("http://127.0.0.1/hiscore?name=Player&clearTime=" + gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")), "", "GET", "", gdjs.VariablesContainer.badVariable, gdjs.VariablesContainer.badVariable);
+{gdjs.evtTools.network.sendAsyncRequest("https://server-1e35.onrender.com/hiscore?name=Player&clearTime=" + gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")), "", "GET", "", gdjs.VariablesContainer.badVariable, gdjs.VariablesContainer.badVariable);
 }
 {gdjs.evtTools.runtimeScene.pauseTimer(runtimeScene, "gametime");
 }
@@ -850,7 +850,7 @@ for (var i = 0, k = 0, l = gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1
 }
 gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1.length = k;
 if (isConditionTrue_0) {
-{gdjs.evtTools.window.openURL("http://127.0.0.1/ranking.html", runtimeScene);
+{gdjs.evtTools.window.openURL("https://server-1e35.onrender.com/rank", runtimeScene);
 }
 }
 
