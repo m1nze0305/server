@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凶宅逃脫排行榜</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#111;
+    color:white;
+    font-family:"Microsoft JhengHei",sans-serif;
+    text-align:center;
+}
+
+h1{
+    margin-top:30px;
+    color:#00ffcc;
+    text-shadow:0 0 15px #00ffcc;
+}
+
+table{
+    width:80%;
+    margin:30px auto;
+    border-collapse:collapse;
+    background:#1e1e1e;
+    box-shadow:0 0 20px rgba(0,255,200,0.2);
+}
+
+th{
+    background:#00b894;
+    color:white;
+    padding:15px;
+    font-size:20px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #444;
+    font-size:18px;
+}
+
+tr:hover{
+    background:#2d3436;
+}
+
+.gold{
+    color:gold;
+    font-weight:bold;
+}
+
+.silver{
+    color:silver;
+    font-weight:bold;
+}
+
+.bronze{
+    color:#cd7f32;
+    font-weight:bold;
+}
+
+.refresh-btn{
+    padding:10px 20px;
+    background:#00b894;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.refresh-btn:hover{
+    background:#00d8a6;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏆 凶宅逃脫排行榜 🏆</h1>
+
+<button class="refresh-btn" onclick="loadRanking()">
+重新整理
+</button>
+
+<table>
+<thead>
+<tr>
+<th>排名</th>
+<th>玩家名稱</th>
+<th>通關時間(秒)</th>
+<th>紀錄時間</th>
+</tr>
+</thead>
+
+<tbody id="rankingBody">
+</tbody>
+</table>
+
+<script>
+
+async function loadRanking(){
+
+    try{
+
+        const response = await fetch("/ranking");
+        const data = await response.json();
+
+        const tbody = document.getElementById("rankingBody");
+        tbody.innerHTML = "";
+
+        data.forEach((item,index)=>{
+
+            let rankStyle = "";
+
+            if(index === 0){
+                rankStyle = "gold";
+            }
+            else if(index === 1){
+                rankStyle = "silver";
+            }
+            else if(index === 2){
+                rankStyle = "bronze";
+            }
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td class="${rankStyle}">
+                    ${index+1}
+                </td>
+
+                <td>
+                    ${item.name || "玩家"}
+                </td>
+
+                <td>
+                    ${item.clearTime} 秒
+                </td>
+
+                <td>
+                    ${new Date(item.createdAt).toLocaleString()}
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+
+    }
+    catch(error){
+        console.log(error);
+        alert("排行榜載入失敗");
+    }
+}
+
+loadRanking();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "Haunted House Escape Prototype",
+  "short_name": "Haunted House Escape Prototype",
+  "id": "com.example.hauntedhouseescape",
+  "description": "",
+  "orientation": "any",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "black",
+  "categories": ["games", "entertainment"],
+  "icons": []
+}
