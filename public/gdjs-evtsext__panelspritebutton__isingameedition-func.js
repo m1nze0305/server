@@ -6,10 +6,9 @@ if (typeof gdjs.evtsExt__PanelSpriteButton__IsInGameEdition !== "undefined") {
 }
 
 gdjs.evtsExt__PanelSpriteButton__IsInGameEdition = {};
-gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.idToCallbackMap = new Map();
 
 
-gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.userFunc0x93df68 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.userFunc0x78b250 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 const game = runtimeScene.getGame();
 eventsFunctionContext.returnValue = game.isInGameEdition && game.isInGameEdition();
@@ -19,7 +18,7 @@ gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.eventsList0 = function(runtimeS
 {
 
 
-gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.userFunc0x93df68(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.userFunc0x78b250(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
 
 }
 
@@ -27,7 +26,6 @@ gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.userFunc0x93df68(runtimeScene, 
 };
 
 gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.func = function(runtimeScene, parentEventsFunctionContext) {
-let scopeInstanceContainer = null;
 var eventsFunctionContext = {
   _objectsMap: {
 },
@@ -35,9 +33,6 @@ var eventsFunctionContext = {
 },
   _behaviorNamesMap: {
 },
-  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
-  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
-  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -50,15 +45,14 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
+      const object = parentEventsFunctionContext ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
         eventsFunctionContext._objectArraysMap[objectName].push(object);
       }
-      return object;
-    }
+      return object;    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -66,7 +60,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
+        count += parentEventsFunctionContext ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -83,7 +77,6 @@ parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
 
 
 gdjs.evtsExt__PanelSpriteButton__IsInGameEdition.eventsList0(runtimeScene, eventsFunctionContext);
-
 
 return !!eventsFunctionContext.returnValue;
 }
