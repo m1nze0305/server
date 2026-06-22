@@ -25,22 +25,54 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState = cla
   }
 
   // Hot-reload:
-  updateFromBehaviorData(oldBehaviorData, newBehaviorData) {
+  applyBehaviorOverriding(behaviorOverriding) {
     
-    if (oldBehaviorData.HoverColor !== newBehaviorData.HoverColor)
-      this._behaviorData.HoverColor = newBehaviorData.HoverColor;
-    if (oldBehaviorData.HoverPrefix !== newBehaviorData.HoverPrefix)
-      this._behaviorData.HoverPrefix = newBehaviorData.HoverPrefix;
-    if (oldBehaviorData.HoverSuffix !== newBehaviorData.HoverSuffix)
-      this._behaviorData.HoverSuffix = newBehaviorData.HoverSuffix;
-    if (oldBehaviorData.IsHovered !== newBehaviorData.IsHovered)
-      this._behaviorData.IsHovered = newBehaviorData.IsHovered;
-    if (oldBehaviorData.IdleText !== newBehaviorData.IdleText)
-      this._behaviorData.IdleText = newBehaviorData.IdleText;
-    if (oldBehaviorData.IdleColor !== newBehaviorData.IdleColor)
-      this._behaviorData.IdleColor = newBehaviorData.IdleColor;
+    if (behaviorOverriding.HoverColor !== undefined)
+      this._behaviorData.HoverColor = behaviorOverriding.HoverColor;
+    if (behaviorOverriding.HoverPrefix !== undefined)
+      this._behaviorData.HoverPrefix = behaviorOverriding.HoverPrefix;
+    if (behaviorOverriding.HoverSuffix !== undefined)
+      this._behaviorData.HoverSuffix = behaviorOverriding.HoverSuffix;
+    if (behaviorOverriding.IsHovered !== undefined)
+      this._behaviorData.IsHovered = behaviorOverriding.IsHovered;
+    if (behaviorOverriding.IdleText !== undefined)
+      this._behaviorData.IdleText = behaviorOverriding.IdleText;
+    if (behaviorOverriding.IdleColor !== undefined)
+      this._behaviorData.IdleColor = behaviorOverriding.IdleColor;
 
     return true;
+  }
+
+  // Network sync:
+  getNetworkSyncData(syncOptions) {
+    return {
+      ...super.getNetworkSyncData(syncOptions),
+      props: {
+        
+    HoverColor: this._behaviorData.HoverColor,
+    HoverPrefix: this._behaviorData.HoverPrefix,
+    HoverSuffix: this._behaviorData.HoverSuffix,
+    IsHovered: this._behaviorData.IsHovered,
+    IdleText: this._behaviorData.IdleText,
+    IdleColor: this._behaviorData.IdleColor,
+      }
+    };
+  }
+  updateFromNetworkSyncData(networkSyncData, options) {
+    super.updateFromNetworkSyncData(networkSyncData, options);
+    
+    if (networkSyncData.props.HoverColor !== undefined)
+      this._behaviorData.HoverColor = networkSyncData.props.HoverColor;
+    if (networkSyncData.props.HoverPrefix !== undefined)
+      this._behaviorData.HoverPrefix = networkSyncData.props.HoverPrefix;
+    if (networkSyncData.props.HoverSuffix !== undefined)
+      this._behaviorData.HoverSuffix = networkSyncData.props.HoverSuffix;
+    if (networkSyncData.props.IsHovered !== undefined)
+      this._behaviorData.IsHovered = networkSyncData.props.IsHovered;
+    if (networkSyncData.props.IdleText !== undefined)
+      this._behaviorData.IdleText = networkSyncData.props.IdleText;
+    if (networkSyncData.props.IdleColor !== undefined)
+      this._behaviorData.IdleColor = networkSyncData.props.IdleColor;
   }
 
   // Properties:
@@ -112,6 +144,7 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.getSh
 
 // Methods:
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext = {};
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.GDObjectObjects1= [];
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.GDObjectObjects2= [];
 
@@ -123,8 +156,11 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-{if (typeof eventsFunctionContext !== 'undefined') { eventsFunctionContext.returnValue = true; }}}
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.returnValue = true;}
+}
 
 }
 
@@ -135,6 +171,7 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -148,6 +185,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -160,14 +200,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -175,7 +218,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -194,10 +237,14 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.GDObjectObjects2.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.eventsList0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.GDObjectObjects1.length = 0;
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.IsHoveredContext.GDObjectObjects2.length = 0;
+
 
 return !!eventsFunctionContext.returnValue;
 }
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext = {};
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1= [];
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2= [];
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3= [];
@@ -210,12 +257,17 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor() != "");
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
-{/* Unknown instruction - skipped. */}{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIdleColor((( gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length === 0 ) ? "" :gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior")).Color(eventsFunctionContext)))
+}
+{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setTint(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor());
 }
-}}
+}
+}
 
 }
 
@@ -228,12 +280,16 @@ isConditionTrue_0 = false;
 {let isConditionTrue_1 = false;
 isConditionTrue_0 = false;
 {
-/* Unknown instruction - skipped. */if(isConditionTrue_1) {
+{isConditionTrue_1 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverPrefix() != "");
+}
+if(isConditionTrue_1) {
     isConditionTrue_0 = true;
 }
 }
 {
-/* Unknown instruction - skipped. */if(isConditionTrue_1) {
+{isConditionTrue_1 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverSuffix() != "");
+}
+if(isConditionTrue_1) {
     isConditionTrue_0 = true;
 }
 }
@@ -242,10 +298,13 @@ isConditionTrue_0 = false;
 }
 if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1);
-{/* Unknown instruction - skipped. */}{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length ;i < len;++i) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIdleText((( gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length === 0 ) ? "" :gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[0].getBehavior(eventsFunctionContext.getBehaviorName("Text")).getText()))
+}
+{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverPrefix() + (gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).getText()) + eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverSuffix());
 }
-}}
+}
+}
 
 }
 
@@ -257,12 +316,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor() != "");
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setTint(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIdleColor());
 }
-}}
+}
+}
 
 }
 
@@ -275,12 +337,16 @@ isConditionTrue_0 = false;
 {let isConditionTrue_1 = false;
 isConditionTrue_0 = false;
 {
-/* Unknown instruction - skipped. */if(isConditionTrue_1) {
+{isConditionTrue_1 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverPrefix() != "");
+}
+if(isConditionTrue_1) {
     isConditionTrue_0 = true;
 }
 }
 {
-/* Unknown instruction - skipped. */if(isConditionTrue_1) {
+{isConditionTrue_1 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverSuffix() != "");
+}
+if(isConditionTrue_1) {
     isConditionTrue_0 = true;
 }
 }
@@ -292,7 +358,8 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[i].getBehavior(eventsFunctionContext.getBehaviorName("Text")).setText(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIdleText());
 }
-}}
+}
+}
 
 }
 
@@ -304,11 +371,17 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */}
+{isConditionTrue_0 = !eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
 if (isConditionTrue_0) {
-{/* Unknown instruction - skipped. */}
+isConditionTrue_0 = false;
+{isConditionTrue_0 = eventsFunctionContext.getArgument("Value");
+}
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIsHovered(true)
+}
+
 { //Subevents
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.eventsList0(runtimeScene, eventsFunctionContext);} //End of subevents
 }
@@ -321,11 +394,17 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */}
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
 if (isConditionTrue_0) {
-{/* Unknown instruction - skipped. */}
+isConditionTrue_0 = false;
+{isConditionTrue_0 = !eventsFunctionContext.getArgument("Value");
+}
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIsHovered(false)
+}
+
 { //Subevents
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.eventsList1(runtimeScene, eventsFunctionContext);} //End of subevents
 }
@@ -339,6 +418,7 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -352,6 +432,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -364,14 +447,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -379,7 +465,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -400,14 +486,19 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.eventsList2(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length = 0;
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length = 0;
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3.length = 0;
+
 
 return;
 }
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext = {};
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.GDObjectObjects1= [];
 
 
-gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.userFunc0x88b3c0 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.userFunc0x9a8940 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 /** @type {gdjs.BitmapTextRuntimeObject} */
 const object = eventsFunctionContext.getObjects("Object")[0];
@@ -419,7 +510,7 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 {
 
 
-gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.userFunc0x88b3c0(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.userFunc0x9a8940(runtimeScene, eventsFunctionContext);
 
 }
 
@@ -430,6 +521,7 @@ gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.proto
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -443,6 +535,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -455,14 +550,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -470,7 +568,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -488,6 +586,8 @@ parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.GDObjectObjects1.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.eventsList0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__BitmapTextStyleState.BitmapTextStyleState.prototype.ColorContext.GDObjectObjects1.length = 0;
+
 
 return "" + eventsFunctionContext.returnValue;
 }

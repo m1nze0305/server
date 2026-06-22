@@ -26,24 +26,59 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState = class TextStyle
   }
 
   // Hot-reload:
-  updateFromBehaviorData(oldBehaviorData, newBehaviorData) {
+  applyBehaviorOverriding(behaviorOverriding) {
     
-    if (oldBehaviorData.ShouldEnableOutlineOnHover !== newBehaviorData.ShouldEnableOutlineOnHover)
-      this._behaviorData.ShouldEnableOutlineOnHover = newBehaviorData.ShouldEnableOutlineOnHover;
-    if (oldBehaviorData.HoverColor !== newBehaviorData.HoverColor)
-      this._behaviorData.HoverColor = newBehaviorData.HoverColor;
-    if (oldBehaviorData.ShouldEnableShadowOnHover !== newBehaviorData.ShouldEnableShadowOnHover)
-      this._behaviorData.ShouldEnableShadowOnHover = newBehaviorData.ShouldEnableShadowOnHover;
-    if (oldBehaviorData.HoverFontSize !== newBehaviorData.HoverFontSize)
-      this._behaviorData.HoverFontSize = newBehaviorData.HoverFontSize;
-    if (oldBehaviorData.IsHovered !== newBehaviorData.IsHovered)
-      this._behaviorData.IsHovered = newBehaviorData.IsHovered;
-    if (oldBehaviorData.IdleFontSize !== newBehaviorData.IdleFontSize)
-      this._behaviorData.IdleFontSize = newBehaviorData.IdleFontSize;
-    if (oldBehaviorData.IdleColor !== newBehaviorData.IdleColor)
-      this._behaviorData.IdleColor = newBehaviorData.IdleColor;
+    if (behaviorOverriding.ShouldEnableOutlineOnHover !== undefined)
+      this._behaviorData.ShouldEnableOutlineOnHover = behaviorOverriding.ShouldEnableOutlineOnHover;
+    if (behaviorOverriding.HoverColor !== undefined)
+      this._behaviorData.HoverColor = behaviorOverriding.HoverColor;
+    if (behaviorOverriding.ShouldEnableShadowOnHover !== undefined)
+      this._behaviorData.ShouldEnableShadowOnHover = behaviorOverriding.ShouldEnableShadowOnHover;
+    if (behaviorOverriding.HoverFontSize !== undefined)
+      this._behaviorData.HoverFontSize = behaviorOverriding.HoverFontSize;
+    if (behaviorOverriding.IsHovered !== undefined)
+      this._behaviorData.IsHovered = behaviorOverriding.IsHovered;
+    if (behaviorOverriding.IdleFontSize !== undefined)
+      this._behaviorData.IdleFontSize = behaviorOverriding.IdleFontSize;
+    if (behaviorOverriding.IdleColor !== undefined)
+      this._behaviorData.IdleColor = behaviorOverriding.IdleColor;
 
     return true;
+  }
+
+  // Network sync:
+  getNetworkSyncData(syncOptions) {
+    return {
+      ...super.getNetworkSyncData(syncOptions),
+      props: {
+        
+    ShouldEnableOutlineOnHover: this._behaviorData.ShouldEnableOutlineOnHover,
+    HoverColor: this._behaviorData.HoverColor,
+    ShouldEnableShadowOnHover: this._behaviorData.ShouldEnableShadowOnHover,
+    HoverFontSize: this._behaviorData.HoverFontSize,
+    IsHovered: this._behaviorData.IsHovered,
+    IdleFontSize: this._behaviorData.IdleFontSize,
+    IdleColor: this._behaviorData.IdleColor,
+      }
+    };
+  }
+  updateFromNetworkSyncData(networkSyncData, options) {
+    super.updateFromNetworkSyncData(networkSyncData, options);
+    
+    if (networkSyncData.props.ShouldEnableOutlineOnHover !== undefined)
+      this._behaviorData.ShouldEnableOutlineOnHover = networkSyncData.props.ShouldEnableOutlineOnHover;
+    if (networkSyncData.props.HoverColor !== undefined)
+      this._behaviorData.HoverColor = networkSyncData.props.HoverColor;
+    if (networkSyncData.props.ShouldEnableShadowOnHover !== undefined)
+      this._behaviorData.ShouldEnableShadowOnHover = networkSyncData.props.ShouldEnableShadowOnHover;
+    if (networkSyncData.props.HoverFontSize !== undefined)
+      this._behaviorData.HoverFontSize = networkSyncData.props.HoverFontSize;
+    if (networkSyncData.props.IsHovered !== undefined)
+      this._behaviorData.IsHovered = networkSyncData.props.IsHovered;
+    if (networkSyncData.props.IdleFontSize !== undefined)
+      this._behaviorData.IdleFontSize = networkSyncData.props.IdleFontSize;
+    if (networkSyncData.props.IdleColor !== undefined)
+      this._behaviorData.IdleColor = networkSyncData.props.IdleColor;
   }
 
   // Properties:
@@ -127,6 +162,7 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.getSharedData = f
 
 // Methods:
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext = {};
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.GDObjectObjects1= [];
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.GDObjectObjects2= [];
 
@@ -138,8 +174,11 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHover
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-{if (typeof eventsFunctionContext !== 'undefined') { eventsFunctionContext.returnValue = true; }}}
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.returnValue = true;}
+}
 
 }
 
@@ -150,6 +189,7 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHover
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -163,6 +203,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -175,14 +218,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -190,7 +236,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -209,10 +255,14 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHover
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.GDObjectObjects2.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.eventsList0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.GDObjectObjects1.length = 0;
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.IsHoveredContext.GDObjectObjects2.length = 0;
+
 
 return !!eventsFunctionContext.returnValue;
 }
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext = {};
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1= [];
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2= [];
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3= [];
@@ -225,12 +275,17 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHo
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverFontSize() > 0);
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
-{/* Unknown instruction - skipped. */}{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIdleFontSize((( gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length === 0 ) ? 0 :gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[0].getCharacterSize()))
+}
+{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setCharacterSize(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverFontSize());
 }
-}}
+}
+}
 
 }
 
@@ -240,12 +295,17 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor() != "");
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
-{/* Unknown instruction - skipped. */}{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIdleColor((( gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length === 0 ) ? "" :gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior")).Color(eventsFunctionContext)))
+}
+{for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setColor(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor());
 }
-}}
+}
+}
 
 }
 
@@ -255,12 +315,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getShouldEnableShadowOnHover();
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].showShadow(true);
 }
-}}
+}
+}
 
 }
 
@@ -270,12 +333,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getShouldEnableOutlineOnHover();
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[i].setOutlineEnabled(true);
 }
-}}
+}
+}
 
 }
 
@@ -287,12 +353,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverFontSize() > 0);
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setCharacterSize(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIdleFontSize());
 }
-}}
+}
+}
 
 }
 
@@ -302,12 +371,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = (eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getHoverColor() != "");
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].setColor(eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIdleColor());
 }
-}}
+}
+}
 
 }
 
@@ -317,12 +389,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getShouldEnableShadowOnHover();
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2[i].showShadow(false);
 }
-}}
+}
+}
 
 }
 
@@ -332,12 +407,15 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getShouldEnableOutlineOnHover();
+}
+if (isConditionTrue_0) {
 gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1);
 {for(var i = 0, len = gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length ;i < len;++i) {
     gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1[i].setOutlineEnabled(false);
 }
-}}
+}
+}
 
 }
 
@@ -349,11 +427,17 @@ gdjs.copyArray(eventsFunctionContext.getObjects("Object"), gdjs.evtsExt__PanelSp
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */}
+{isConditionTrue_0 = !eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
 if (isConditionTrue_0) {
-{/* Unknown instruction - skipped. */}
+isConditionTrue_0 = false;
+{isConditionTrue_0 = eventsFunctionContext.getArgument("Value");
+}
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIsHovered(true)
+}
+
 { //Subevents
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.eventsList0(runtimeScene, eventsFunctionContext);} //End of subevents
 }
@@ -366,11 +450,17 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHo
 
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */if (isConditionTrue_0) {
-isConditionTrue_0 = false;
-/* Unknown instruction - skipped. */}
+{isConditionTrue_0 = eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._getIsHovered();
+}
 if (isConditionTrue_0) {
-{/* Unknown instruction - skipped. */}
+isConditionTrue_0 = false;
+{isConditionTrue_0 = !eventsFunctionContext.getArgument("Value");
+}
+}
+if (isConditionTrue_0) {
+{eventsFunctionContext.getObjects("Object")[0].getBehavior(eventsFunctionContext.getBehaviorName("Behavior"))._setIsHovered(false)
+}
+
 { //Subevents
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.eventsList1(runtimeScene, eventsFunctionContext);} //End of subevents
 }
@@ -384,6 +474,7 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHo
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -397,6 +488,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -409,14 +503,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -424,7 +521,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -445,14 +542,19 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHo
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.eventsList2(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects1.length = 0;
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects2.length = 0;
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.SetIsHoveredContext.GDObjectObjects3.length = 0;
+
 
 return;
 }
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext = {};
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.idToCallbackMap = new Map();
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.GDObjectObjects1= [];
 
 
-gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.userFunc0x78dad8 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.userFunc0x9deff0 = function GDJSInlineCode(runtimeScene, eventsFunctionContext) {
 "use strict";
 /** @type {gdjs.TextRuntimeObject} */
 const object = eventsFunctionContext.getObjects("Object")[0];
@@ -464,7 +566,7 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorCo
 {
 
 
-gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.userFunc0x78dad8(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.userFunc0x9deff0(runtimeScene, eventsFunctionContext);
 
 }
 
@@ -475,6 +577,7 @@ gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.Color =
 
 var that = this;
 var runtimeScene = this._runtimeScene;
+let scopeInstanceContainer = null;
 var thisObjectList = [this.owner];
 var Object = Hashtable.newFrom({Object: thisObjectList});
 var Behavior = this.name;
@@ -488,6 +591,9 @@ var eventsFunctionContext = {
   _behaviorNamesMap: {
 "Behavior": Behavior
 },
+  globalVariablesForExtension: runtimeScene.getGame().getVariablesForExtension("PanelSpriteButton"),
+  sceneVariablesForExtension: runtimeScene.getScene().getVariablesForExtension("PanelSpriteButton"),
+  localVariables: [],
   getObjects: function(objectName) {
     return eventsFunctionContext._objectArraysMap[objectName] || [];
   },
@@ -500,14 +606,17 @@ var eventsFunctionContext = {
   createObject: function(objectName) {
     const objectsList = eventsFunctionContext._objectsMap[objectName];
     if (objectsList) {
-      const object = parentEventsFunctionContext ?
+      const object = parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
         parentEventsFunctionContext.createObject(objectsList.firstKey()) :
         runtimeScene.createObject(objectsList.firstKey());
       if (object) {
         objectsList.get(objectsList.firstKey()).push(object);
-        eventsFunctionContext._objectArraysMap[objectName].push(object);
+        if (!(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName))) {
+          eventsFunctionContext._objectArraysMap[objectName].push(object);
+        }
       }
-      return object;    }
+      return object;
+    }
     return null;
   },
   getInstancesCountOnScene: function(objectName) {
@@ -515,7 +624,7 @@ var eventsFunctionContext = {
     let count = 0;
     if (objectsList) {
       for(const objectName in objectsList.items)
-        count += parentEventsFunctionContext ?
+        count += parentEventsFunctionContext && !(scopeInstanceContainer && scopeInstanceContainer.isObjectRegistered(objectName)) ?
 parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
         runtimeScene.getInstancesCountOnScene(objectName);
     }
@@ -533,6 +642,8 @@ parentEventsFunctionContext.getInstancesCountOnScene(objectName) :
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.GDObjectObjects1.length = 0;
 
 gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.eventsList0(runtimeScene, eventsFunctionContext);
+gdjs.evtsExt__PanelSpriteButton__TextStyleState.TextStyleState.prototype.ColorContext.GDObjectObjects1.length = 0;
+
 
 return "" + eventsFunctionContext.returnValue;
 }

@@ -1,4 +1,6 @@
 gdjs.MansionEscapeCode = {};
+gdjs.MansionEscapeCode.localVariables = [];
+gdjs.MansionEscapeCode.idToCallbackMap = new Map();
 gdjs.MansionEscapeCode.GDFloorObjects1= [];
 gdjs.MansionEscapeCode.GDFloorObjects2= [];
 gdjs.MansionEscapeCode.GDWallObjects1= [];
@@ -43,7 +45,7 @@ gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objec
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDClosedDoorObjects1Objects = Hashtable.newFrom({"ClosedDoor": gdjs.MansionEscapeCode.GDClosedDoorObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objects = Hashtable.newFrom({"Wall": gdjs.MansionEscapeCode.GDWallObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDEnemyObjects1Objects = Hashtable.newFrom({"Enemy": gdjs.MansionEscapeCode.GDEnemyObjects1});
-gdjs.MansionEscapeCode.userFunc0x879610 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0xb340f0 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 const message = runtimeScene.getObjects("Message")[0];
@@ -257,7 +259,7 @@ if (visionLight) {
 gdjs.evtTools.camera.centerCamera(runtimeScene, player, false, "", 0);
 gdjs.evtTools.camera.clampCamera(runtimeScene, 0, 0, 3200, 1920, "", 0);
 };
-gdjs.MansionEscapeCode.userFunc0x8798a0 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0xb35390 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 
@@ -294,7 +296,7 @@ gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDPlayerObjects1Obj
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDLightItemObjects1Objects = Hashtable.newFrom({"LightItem": gdjs.MansionEscapeCode.GDLightItemObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDPlayerObjects1Objects = Hashtable.newFrom({"Player": gdjs.MansionEscapeCode.GDPlayerObjects1});
 gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDRepelItemObjects1Objects = Hashtable.newFrom({"RepelItem": gdjs.MansionEscapeCode.GDRepelItemObjects1});
-gdjs.MansionEscapeCode.userFunc0x8f1a78 = function GDJSInlineCode(runtimeScene) {
+gdjs.MansionEscapeCode.userFunc0xb37388 = function GDJSInlineCode(runtimeScene) {
 "use strict";
 const player = runtimeScene.getObjects("Player")[0];
 if (!player) {
@@ -392,8 +394,10 @@ isConditionTrue_0 = false;
 isConditionTrue_0 = gdjs.evtTools.runtimeScene.sceneJustBegins(runtimeScene);
 if (isConditionTrue_0) {
 {runtimeScene.getScene().getVariables().getFromIndex(7).setNumber(1);
-}{gdjs.evtTools.runtimeScene.resetTimer(runtimeScene, "gametime");
-}}
+}
+{gdjs.evtTools.runtimeScene.resetTimer(runtimeScene, "gametime");
+}
+}
 
 }
 
@@ -415,40 +419,52 @@ gdjs.copyArray(runtimeScene.getObjects("Wall"), gdjs.MansionEscapeCode.GDWallObj
 {for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].setZOrder((gdjs.MansionEscapeCode.GDPlayerObjects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDEnemyObjects1[i].setZOrder((gdjs.MansionEscapeCode.GDEnemyObjects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKeyObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKeyObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDKeyObjects1[i].setZOrder((gdjs.MansionEscapeCode.GDKeyObjects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey2Objects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey2Objects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDKey2Objects1[i].setZOrder((gdjs.MansionEscapeCode.GDKey2Objects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey3Objects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey3Objects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDKey3Objects1[i].setZOrder((gdjs.MansionEscapeCode.GDKey3Objects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDClosedDoorObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDClosedDoorObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDClosedDoorObjects1[i].setZOrder((gdjs.MansionEscapeCode.GDClosedDoorObjects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDOpenDoorObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDOpenDoorObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDOpenDoorObjects1[i].setZOrder((gdjs.MansionEscapeCode.GDOpenDoorObjects1[i].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDVisionLightObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDVisionLightObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDVisionLightObjects1[i].setPosition((( gdjs.MansionEscapeCode.GDPlayerObjects1.length === 0 ) ? 0 :gdjs.MansionEscapeCode.GDPlayerObjects1[0].getPointX("Centre")),(( gdjs.MansionEscapeCode.GDPlayerObjects1.length === 0 ) ? 0 :gdjs.MansionEscapeCode.GDPlayerObjects1[0].getPointY("Centre")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].separateFromObjectsList(gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objects, false);
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].separateFromObjectsList(gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDClosedDoorObjects1Objects, false);
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDEnemyObjects1[i].separateFromObjectsList(gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDWallObjects1Objects, false);
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDEnemyObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDEnemyObjects1[i].separateFromObjectsList(gdjs.MansionEscapeCode.mapOfGDgdjs_9546MansionEscapeCode_9546GDEnemyObjects1Objects, false);
 }
-}}
+}
+}
 
 }
 
@@ -456,7 +472,7 @@ gdjs.copyArray(runtimeScene.getObjects("Wall"), gdjs.MansionEscapeCode.GDWallObj
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x879610(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0xb340f0(runtimeScene);
 
 }
 
@@ -464,7 +480,7 @@ gdjs.MansionEscapeCode.userFunc0x879610(runtimeScene);
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x8798a0(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0xb35390(runtimeScene);
 
 }
 
@@ -497,13 +513,16 @@ if (isConditionTrue_0) {
 /* Reuse gdjs.MansionEscapeCode.GDKeyObjects1 */
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(3).add(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKeyObjects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDKeyObjects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKeyObjects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDKeyObjects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("黑暗中有遺物在共鳴，繼續找下去。");
 }
-}}
+}
+}
 
 }
 
@@ -532,13 +551,16 @@ if (isConditionTrue_0) {
 /* Reuse gdjs.MansionEscapeCode.GDKey2Objects1 */
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(3).add(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey2Objects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDKey2Objects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey2Objects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDKey2Objects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("黑暗中有遺物在共鳴，繼續找下去。");
 }
-}}
+}
+}
 
 }
 
@@ -567,13 +589,16 @@ if (isConditionTrue_0) {
 /* Reuse gdjs.MansionEscapeCode.GDKey3Objects1 */
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(3).add(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey3Objects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDKey3Objects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDKey3Objects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDKey3Objects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("黑暗中有遺物在共鳴，繼續找下去。");
 }
-}}
+}
+}
 
 }
 
@@ -593,16 +618,20 @@ gdjs.copyArray(runtimeScene.getObjects("ClosedDoor"), gdjs.MansionEscapeCode.GDC
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 gdjs.copyArray(runtimeScene.getObjects("OpenDoor"), gdjs.MansionEscapeCode.GDOpenDoorObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(0).setNumber(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDOpenDoorObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDOpenDoorObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDOpenDoorObjects1[i].setPosition((( gdjs.MansionEscapeCode.GDClosedDoorObjects1.length === 0 ) ? 0 :gdjs.MansionEscapeCode.GDClosedDoorObjects1[0].getPointX("")),(( gdjs.MansionEscapeCode.GDClosedDoorObjects1.length === 0 ) ? 0 :gdjs.MansionEscapeCode.GDClosedDoorObjects1[0].getPointY("")));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDClosedDoorObjects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDClosedDoorObjects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDClosedDoorObjects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDClosedDoorObjects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("3 個遺物都收集完成了，快往出口逃。");
 }
-}}
+}
+}
 
 }
 
@@ -627,13 +656,16 @@ if (isConditionTrue_0) {
 /* Reuse gdjs.MansionEscapeCode.GDLightItemObjects1 */
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(4).add(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDLightItemObjects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDLightItemObjects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDLightItemObjects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDLightItemObjects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("你撿到照明遺物了，按 F 可暫時照亮地圖。");
 }
-}}
+}
+}
 
 }
 
@@ -658,13 +690,16 @@ if (isConditionTrue_0) {
 gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMessageObjects1);
 /* Reuse gdjs.MansionEscapeCode.GDRepelItemObjects1 */
 {runtimeScene.getScene().getVariables().getFromIndex(5).add(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDRepelItemObjects1.length ;i < len;++i) {
-    gdjs.MansionEscapeCode.GDRepelItemObjects1[i].setPosition(-(500),-(500));
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDRepelItemObjects1.length ;i < len;++i) {
+    gdjs.MansionEscapeCode.GDRepelItemObjects1[i].setPosition(-500,-500);
+}
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("你撿到驅鬼護符了，按 G 可震退附近鬼魂。");
 }
-}}
+}
+}
 
 }
 
@@ -672,7 +707,7 @@ gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMess
 {
 
 
-gdjs.MansionEscapeCode.userFunc0x8f1a78(runtimeScene);
+gdjs.MansionEscapeCode.userFunc0xb37388(runtimeScene);
 
 }
 
@@ -698,17 +733,22 @@ gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMess
 /* Reuse gdjs.MansionEscapeCode.GDPlayerObjects1 */
 gdjs.copyArray(runtimeScene.getObjects("plain_text"), gdjs.MansionEscapeCode.GDplain_9595textObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(1).setNumber(1);
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].getBehavior("TopDownMovement").ignoreDefaultControls(true);
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("你被抓到了，按 R 重新挑戰。");
 }
-}{gdjs.evtTools.runtimeScene.pauseTimer(runtimeScene, "gametime");
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDplain_9595textObjects1.length ;i < len;++i) {
+}
+{gdjs.evtTools.runtimeScene.pauseTimer(runtimeScene, "gametime");
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDplain_9595textObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDplain_9595textObjects1[i].getBehavior("Text").setText("結束時間：" + gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")) + " 秒");
 }
-}}
+}
+}
 
 }
 
@@ -734,18 +774,24 @@ gdjs.copyArray(runtimeScene.getObjects("Message"), gdjs.MansionEscapeCode.GDMess
 /* Reuse gdjs.MansionEscapeCode.GDPlayerObjects1 */
 gdjs.copyArray(runtimeScene.getObjects("plain_text"), gdjs.MansionEscapeCode.GDplain_9595textObjects1);
 {runtimeScene.getScene().getVariables().getFromIndex(2).setNumber(1);
-}{gdjs.evtTools.network.sendAsyncRequest("https://s1411322039escape.onrender.com/hiscore?name=Player&clearTime=" + gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")), "", "GET", "", gdjs.VariablesContainer.badVariable, gdjs.VariablesContainer.badVariable);
-}{gdjs.evtTools.runtimeScene.pauseTimer(runtimeScene, "gametime");
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
+}
+{gdjs.evtTools.network.sendAsyncRequest("https://s1411322039escape.onrender.com/hiscore?name=Player&clearTime=" + gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")), "", "GET", "", gdjs.VariablesContainer.badVariable, gdjs.VariablesContainer.badVariable);
+}
+{gdjs.evtTools.runtimeScene.pauseTimer(runtimeScene, "gametime");
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].getBehavior("TopDownMovement").ignoreDefaultControls(true);
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDMessageObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDMessageObjects1[i].setString("你成功逃出去了，" + " 按 R 重新開始。");
 }
-}{for(var i = 0, len = gdjs.MansionEscapeCode.GDplain_9595textObjects1.length ;i < len;++i) {
+}
+{for(var i = 0, len = gdjs.MansionEscapeCode.GDplain_9595textObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDplain_9595textObjects1[i].getBehavior("Text").setText(gdjs.evtTools.common.toString(gdjs.evtTools.runtimeScene.getTimerElapsedTimeInSeconds(runtimeScene, "gametime")));
 }
-}}
+}
+}
 
 }
 
@@ -781,8 +827,10 @@ gdjs.copyArray(runtimeScene.getObjects("Player"), gdjs.MansionEscapeCode.GDPlaye
 {for(var i = 0, len = gdjs.MansionEscapeCode.GDPlayerObjects1.length ;i < len;++i) {
     gdjs.MansionEscapeCode.GDPlayerObjects1[i].getBehavior("TopDownMovement").ignoreDefaultControls(false);
 }
-}{runtimeScene.getScene().getVariables().getFromIndex(7).setNumber(1);
-}}
+}
+{runtimeScene.getScene().getVariables().getFromIndex(7).setNumber(1);
+}
+}
 
 }
 
@@ -794,7 +842,7 @@ gdjs.copyArray(runtimeScene.getObjects("WhiteDecoratedButton"), gdjs.MansionEsca
 let isConditionTrue_0 = false;
 isConditionTrue_0 = false;
 for (var i = 0, k = 0, l = gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1.length;i<l;++i) {
-    if ( gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1[i].IsClicked((typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined)) ) {
+    if ( gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1[i].IsClicked(null) ) {
         isConditionTrue_0 = true;
         gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1[k] = gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1[i];
         ++k;
@@ -803,7 +851,8 @@ for (var i = 0, k = 0, l = gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1
 gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1.length = k;
 if (isConditionTrue_0) {
 {gdjs.evtTools.window.openURL("https://s1411322039escape.onrender.com/ranking.html", runtimeScene);
-}}
+}
+}
 
 }
 
@@ -853,6 +902,45 @@ gdjs.MansionEscapeCode.GDplain_9595textObjects1.length = 0;
 gdjs.MansionEscapeCode.GDplain_9595textObjects2.length = 0;
 
 gdjs.MansionEscapeCode.eventsList0(runtimeScene);
+gdjs.MansionEscapeCode.GDFloorObjects1.length = 0;
+gdjs.MansionEscapeCode.GDFloorObjects2.length = 0;
+gdjs.MansionEscapeCode.GDWallObjects1.length = 0;
+gdjs.MansionEscapeCode.GDWallObjects2.length = 0;
+gdjs.MansionEscapeCode.GDMessageObjects1.length = 0;
+gdjs.MansionEscapeCode.GDMessageObjects2.length = 0;
+gdjs.MansionEscapeCode.GDHudStatsObjects1.length = 0;
+gdjs.MansionEscapeCode.GDHudStatsObjects2.length = 0;
+gdjs.MansionEscapeCode.GDScreenPanelObjects1.length = 0;
+gdjs.MansionEscapeCode.GDScreenPanelObjects2.length = 0;
+gdjs.MansionEscapeCode.GDScreenTitleObjects1.length = 0;
+gdjs.MansionEscapeCode.GDScreenTitleObjects2.length = 0;
+gdjs.MansionEscapeCode.GDScreenHintObjects1.length = 0;
+gdjs.MansionEscapeCode.GDScreenHintObjects2.length = 0;
+gdjs.MansionEscapeCode.GDPlayerObjects1.length = 0;
+gdjs.MansionEscapeCode.GDPlayerObjects2.length = 0;
+gdjs.MansionEscapeCode.GDEnemyObjects1.length = 0;
+gdjs.MansionEscapeCode.GDEnemyObjects2.length = 0;
+gdjs.MansionEscapeCode.GDKeyObjects1.length = 0;
+gdjs.MansionEscapeCode.GDKeyObjects2.length = 0;
+gdjs.MansionEscapeCode.GDClosedDoorObjects1.length = 0;
+gdjs.MansionEscapeCode.GDClosedDoorObjects2.length = 0;
+gdjs.MansionEscapeCode.GDOpenDoorObjects1.length = 0;
+gdjs.MansionEscapeCode.GDOpenDoorObjects2.length = 0;
+gdjs.MansionEscapeCode.GDVisionLightObjects1.length = 0;
+gdjs.MansionEscapeCode.GDVisionLightObjects2.length = 0;
+gdjs.MansionEscapeCode.GDKey2Objects1.length = 0;
+gdjs.MansionEscapeCode.GDKey2Objects2.length = 0;
+gdjs.MansionEscapeCode.GDKey3Objects1.length = 0;
+gdjs.MansionEscapeCode.GDKey3Objects2.length = 0;
+gdjs.MansionEscapeCode.GDLightItemObjects1.length = 0;
+gdjs.MansionEscapeCode.GDLightItemObjects2.length = 0;
+gdjs.MansionEscapeCode.GDRepelItemObjects1.length = 0;
+gdjs.MansionEscapeCode.GDRepelItemObjects2.length = 0;
+gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects1.length = 0;
+gdjs.MansionEscapeCode.GDWhiteDecoratedButtonObjects2.length = 0;
+gdjs.MansionEscapeCode.GDplain_9595textObjects1.length = 0;
+gdjs.MansionEscapeCode.GDplain_9595textObjects2.length = 0;
+
 
 return;
 
